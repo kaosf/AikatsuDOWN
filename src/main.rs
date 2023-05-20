@@ -20,6 +20,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let csv_data: CsvData = record?.deserialize(None)?;
         let url = csv_data.image_url;
         let id = csv_data.id;
+        if std::path::Path::new(format!("{save_path}{id}.jpg").as_str()).exists() {
+            println!("{id}: Skipped");
+            continue;
+        }
         let image_bytes = reqwest::get(&url).await?.bytes().await?;
         let mut saving_file = File::create(format!("{save_path}{id}.jpg"))?;
         std::io::copy(&mut image_bytes.as_ref(), &mut saving_file)?;
