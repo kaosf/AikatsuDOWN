@@ -23,7 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let id = csv_data.id;
         let url = csv_data.image_url;
         let extension = Path::new(&url).extension().and_then(OsStr::to_str).unwrap();
-        if std::path::Path::new(format!("{save_path}{id}.{extension}").as_str()).exists() {
+        if Path::new(format!("{save_path}{id}.{extension}").as_str()).exists() {
             println!("{id}: Skipped");
             continue;
         }
