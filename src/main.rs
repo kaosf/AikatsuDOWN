@@ -11,8 +11,7 @@ struct CsvData {
     _tags: Vec<String>,
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let save_path = "target/images/";
     let csv_path = "data/aikatsup20230422.csv";
     let file = File::open(csv_path)?;
@@ -27,12 +26,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("{id}: おもわずスキップス♪");
             continue;
         }
-        let image_bytes = reqwest::get(&url).await?.bytes().await?;
+        let image_bytes = reqwest::blocking::get(&url)?.bytes()?;
         let mut saving_file = File::create(format!("{save_path}{id}.{extension}"))?;
         std::io::copy(&mut image_bytes.as_ref(), &mut saving_file)?;
 
         println!("{id}: {} from {url}", csv_data.words);
-        tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
+        std::thread::sleep(std::time::Duration::new(2, 0));
     }
 
     Ok(())
