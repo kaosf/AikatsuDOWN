@@ -7,8 +7,6 @@ struct CsvData {
     id: u32,
     words: String,
     image_url: String,
-    _twitter_url: String,
-    _tags: Vec<String>,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
